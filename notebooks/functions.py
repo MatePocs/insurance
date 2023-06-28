@@ -1,3 +1,7 @@
+
+import numpy as np
+from scipy.special import factorial
+
 from sklearn.datasets import fetch_openml
 
 # the following is from a sklearn page
@@ -28,3 +32,15 @@ def load_mtpl2(n_samples=None):
     for column_name in df.columns[df.dtypes.values == object]:
         df[column_name] = df[column_name].str.strip("'")
     return df.iloc[:n_samples]
+
+def poisson_likelihood(actu, pred):
+    # the factorial is from the scipy package
+    return (np.power(pred, actu)) * np.exp(-pred) / factorial(actu)
+
+def poisson_loglikelihood(actu, pred):
+    return np.log(poisson_likelihood(actu, pred))
+
+def poisson_loglikelihood2(actu, pred):
+    # just a demonstration to make sure my formulas work
+    return actu * np.log(pred) - pred - np.log(factorial(actu))
+
